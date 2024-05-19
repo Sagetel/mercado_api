@@ -21,7 +21,7 @@ Route::get('/', function () {
 Route::get('/api/users', [UserController::class,'index']);
 Route::post('/api/users', [UserController::class,'create']);
 Route::prefix('auth')->middleware('api')->controller(AuthController::class)->group(function () {
-    Route::post('login', [AuthController::class,'login']);
+    Route::post('/login', 'login');
     Route::post('/register', [AuthController::class,'register']);
     Route::post('/logout', [AuthController::class,'logout']);
     Route::post('/refresh', [AuthController::class,'refresh']);
