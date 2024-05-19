@@ -22,7 +22,7 @@ class AuthController extends Controller
     }
     public function user()
     {
-        return response()->json(auth('api')->users());
+        return response()->json(auth('api')->user());
     }
     public function logout()
     {
