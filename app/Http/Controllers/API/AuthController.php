@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function __construct()
@@ -33,6 +32,28 @@ class AuthController extends Controller
     {
         return $this->respondWithToken(auth('api')->refresh());
     }
+
+    public function update(Request $request)
+{
+    $user = auth('api')->user();
+    $userData = $request->data;
+    $allowedFields = ['name', 'surname', 'phone', 'email', 'email_verified_at', 'password', 'birthday', 'ip_address', 'last_login_at'];
+    
+    foreach ($userData as $key => $value) {
+        if (in_array($key, $allowedFields)) {
+            if ($key === 'password') {
+                $user->$key = Hash::make($value); // Хэшируем пароль
+            } else {
+                $user->$key = $value;
+            }
+        }
+    }
+    
+    $user->save();
+    
+    return response()->json(['message' => 'User data updated successfully']);
+}
+
     protected function respondWithToken($token)
     {
         return response()->json([
