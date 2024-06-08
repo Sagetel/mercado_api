@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdsController;
 use App\Http\Controllers\API\AuthController;
 
 /*
@@ -18,13 +19,15 @@ use App\Http\Controllers\API\AuthController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/api/users', [UserController::class,'index']);
-Route::post('/api/users', [UserController::class,'create']);
+Route::get('/api/users', [UserController::class, 'index']);
+Route::post('/api/users', [UserController::class, 'create']);
 Route::prefix('auth')->middleware('api')->controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
-    Route::get('/user', [AuthController::class,'user']);
-    Route::post('/update', [AuthController::class,'update']);
-    
-    Route::post('/logout', [AuthController::class,'logout']);
-    Route::post('/refresh', [AuthController::class,'refresh']);
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/update', [AuthController::class, 'update']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
 });
+Route::get('/api/ads/{id}', [AdsController::class, 'show']);
+Route::get('/api/ads', [AdsController::class, 'index']);
+Route::post('/api/ads', [AdsController::class, 'store']);
